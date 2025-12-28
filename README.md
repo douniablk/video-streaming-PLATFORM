@@ -1,4 +1,4 @@
-# 📺 STREAMING VIDÉO - EXPLICATION COMPLÈTE
+# 📺 STREAMING VIDÉO PLATFORM
 
 ---
 
@@ -1095,8 +1095,4 @@ showError("Segment 5 failed. Check your network.")
         │  └── video-id-2/                   │
         │      └── ...                       │
         └────────────────────────────────────┘
-```
 
----
-
-Voilà ! J'ai créé un document complet qui explique tout. Besoin de clarifications sur un point spécifique ?
