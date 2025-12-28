@@ -1,0 +1,37 @@
+{
+  "quality": "360p",
+  "segmentDuration": 10,
+  "totalSegments": 3,
+  "segments": [
+    {
+      "index": 0,
+      "filename": "seg_000.mp4",
+      "url": "/media/f1400c3b-e0ee-4e62-9a3e-57f162821e4e/360p/seg_000.mp4",
+      "mp4Url": "/media/f1400c3b-e0ee-4e62-9a3e-57f162821e4e/360p/seg_000.mp4",
+      "startTime": 0,
+      "duration": 10,
+      "size": 1155242,
+      "thumbnail": "/media/f1400c3b-e0ee-4e62-9a3e-57f162821e4e/360p/thumbs/seg_000.jpg"
+    },
+    {
+      "index": 1,
+      "filename": "seg_001.mp4",
+      "url": "/media/f1400c3b-e0ee-4e62-9a3e-57f162821e4e/360p/seg_001.mp4",
+      "mp4Url": "/media/f1400c3b-e0ee-4e62-9a3e-57f162821e4e/360p/seg_001.mp4",
+      "startTime": 10,
+      "duration": 10,
+      "size": 1090068,
+      "thumbnail": "/media/f1400c3b-e0ee-4e62-9a3e-57f162821e4e/360p/thumbs/seg_001.jpg"
+    },
+    {
+      "index": 2,
+      "filename": "seg_002.mp4",
+      "url": "/media/f1400c3b-e0ee-4e62-9a3e-57f162821e4e/360p/seg_002.mp4",
+      "mp4Url": "/media/f1400c3b-e0ee-4e62-9a3e-57f162821e4e/360p/seg_002.mp4",
+      "startTime": 20,
+      "duration": 10,
+      "size": 179539,
+      "thumbnail": "/media/f1400c3b-e0ee-4e62-9a3e-57f162821e4e/360p/thumbs/seg_002.jpg"
+    }
+  ]
+}

@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecteur Video Adaptatif - Presentation Professionnelle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px 0;
+        }
+        
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 35mm 40mm;
+            margin: 0 auto 30px;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+        }
+        
+        .page-header {
+            display: none;
+        }
+        
+        .title-page .binome-header {
+            display: block;
+        }
+        
+        .page-number {
+            position: absolute;
+            bottom: 15mm;
+            right: 15mm;
+            font-size: 0.9em;
+            color: #999;
+            font-weight: 500;
+        }
+        
+        h1 {
+            color: #1a1a1a;
+            font-size: 2.3em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-top: 12px;
+            margin-bottom: 8px;
+            border-bottom: 3px solid #5dade2;
+            padding-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-top: 18px;
+            margin-bottom: 12px;
+        }
+        
+        p, li {
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin: 6px 0;
+            color: #424242;
+            font-weight: 400;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+        
+        li {
+            margin-bottom: 4px;
+        }
+        
+        .code-block {
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            border-left: 6px solid #3498db;
+            padding: 18px 16px;
+            margin: 10px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.75em;
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+            color: #e0e0e0;
+            position: relative;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .code-block code {
+            color: #e0e0e0;
+            display: block;
+            padding: 0;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+        }
+        
+        .code-block::before {
+            content: '✕ ○ ◯';
+            position: absolute;
+            top: 6px;
+            left: 10px;
+            font-size: 0.75em;
+            color: #555;
+            letter-spacing: 5px;
+        }
+        
+        .diagram {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+            border: 2px solid #3498db;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.7em;
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.12);
+            color: #1a1a1a;
+            overflow: hidden;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+            font-size: 0.9em;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .table th {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .table td {
+            padding: 8px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .table tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #fff9e6 0%, #ffe680 100%);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            color: #c67c0e;
+        }
+        
+        .success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-left: 5px solid #28a745;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            font-weight: 500;
+            color: #155724;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.1);
+            font-size: 0.95em;
+        }
+        
+        .warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 5px solid #ffc107;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            font-weight: 500;
+            color: #856404;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.1);
+            font-size: 0.95em;
+        }
+        
+        .formula {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 5px solid #2196F3;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-weight: 500;
+            color: #0d47a1;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
+            line-height: 1.5;
+            font-size: 0.9em;
+        }
+        
+        .title-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 297mm;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .title-page h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            color: white;
+            border-bottom: 4px solid rgba(255,255,255,0.4);
+            padding-bottom: 20px;
+            letter-spacing: -1px;
+        }
+        
+        .title-page p {
+            font-size: 1.5em;
+            margin: 15px 0;
+            color: rgba(255,255,255,0.95);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        .title-page p:first-of-type {
+            margin-top: 40px;
+            font-weight: 500;
+            font-size: 1.8em;
+        }
+        
+        .title-page p:last-of-type {
+            margin-top: 80px;
+            font-size: 1.2em;
+            color: rgba(255,255,255,0.8);
+            font-weight: 400;
+        }
+        
+        .binome-header {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .binome-info {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.85);
+            font-weight: 500;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        @media print {
+            body { 
+                background: white;
+                padding: 0;
+            }
+            .page { 
+                box-shadow: none; 
+                margin: 0; 
+                border-radius: 0;
+                padding: 30mm;
+            }
+            .page::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Title -->
+    <div class="page title-page">
+        <div class="binome-header">
+            <div>Binôme: Belkacem Dounia & Messameh Taha</div>
+            <div class="binome-info">Groupe 1 - IAA</div>
+        </div>
+        <h1> Lecteur Video Adaptatif</h1>
+        <p style="font-size: 1.8em; color: rgba(255,255,255,0.95); margin-top: 40px; font-weight: 600; letter-spacing: 0.5px;">Architecture ABR (Adaptive Bitrate)</p>
+        <p style="font-size: 1.8em; color: rgba(255,255,255,0.95); font-weight: 600; letter-spacing: 0.5px;">Streaming Segmente</p>
+        <p style="margin-top: 80px; font-size: 1.3em; color: rgba(255,255,255,0.75); font-weight: 400;">Module: CMM</p>
+        <p style="margin-top: 60px; font-size: 0.95em; color: rgba(255,255,255,0.6);">Streaming Video Haute Performance</p>
+        <div class="page-number" style="color: rgba(255,255,255,0.6);">1</div>
+    </div>
+
+    <!-- Page 2: Problem -->
+    <div class="page">
+        <h1>Problematique</h1>
+        
+        <h2>Approche Traditionnelle (Probleme)</h2>
+        <p>Video 1 heure = 3.6 GB en 1 requete HTTP</p>
+        <ul>
+            <li>1 seule requete = pas de controle granulaire</li>
+            <li>Si crash a 50% = retelecharger tout</li>
+            <li>Pas d'ajustement qualite pendant la lecture</li>
+            <li>Perte massive de bande passante</li>
+        </ul>
+
+        <h2>Solution (Segments)</h2>
+        <p>Video 100 secondes = 25 segments de 4 secondes chacun</p>
+        <ul>
+            <li>25 requetes independantes</li>
+            <li>Si segment 5 manque = juste relancer celui-la</li>
+            <li>Ajustement qualite entre chaque segment</li>
+            <li>Optimisation reseau continue et intelligente</li>
+        </ul>
+
+        <h2>Avantages Cles</h2>
+        <ul>
+            <li><strong>Granularite:</strong> Controle par segment, pas video entiere</li>
+            <li><strong>Resilience:</strong> 1 segment echoue ne bloque pas tout</li>
+            <li><strong>Adaptation:</strong> Changer qualite sans interruption</li>
+            <li><strong>Parallelisation:</strong> Precharger segment suivant en arriere-plan</li>
+        </ul>
+        
+        <div class="page-number">2</div>
+    </div>
+
+    <!-- Page 3: Architecture -->
+    <div class="page">
+        <h1>Architecture Generale</h1>
+        
+        <h2>Flux de Communication</h2>
+        <div class="diagram">
+CLIENT (Navigateur)              SERVEUR (Streaming)
+         |                              |
+    main()                              |
+     |- loadMetadata() -----> GET /metadata/{id}
+     |                        [Qualites dispo, durée]
+     |
+     |- loadSegments() -----> GET /segments/{id}
+     |                        [Liste des segments]
+     |
+     |- startABR()
+     |
+     |- playSegmentAt() ----> GET /media/{id}/{quality}/seg_*.mp4
+                              [Fichier video segmente]
+        </div>
+
+        <h2>Les 4 APIs Principales</h2>
+        <table class="table">
+            <tr>
+                <th>API</th>
+                <th>Role</th>
+                <th>Exemple</th>
+            </tr>
+            <tr>
+                <td>/metadata/{id}</td>
+                <td>Info video (qualites, duree segments)</td>
+                <td>/metadata/video123</td>
+            </tr>
+            <tr>
+                <td>/segments/{id}</td>
+                <td>Liste tous les segments</td>
+                <td>/segments/video123</td>
+            </tr>
+            <tr>
+                <td>/media/{id}/{quality}/seg_*.mp4</td>
+                <td>Telecharge un segment</td>
+                <td>/media/video123/720p/seg_005.mp4</td>
+            </tr>
+        </table>
+
+        
+        
+        
+        
+        
+      
+        
+        <div class="page-number">3</div>
+    </div>
+
+    <!-- Page 4: Detection 404 -->
+
+    <div class="page">
+        <h1>Flux d'Initialisation</h1>
+        <ol>
+            <li>Recuperer ID video de l'URL (?v=video123)</li>
+            <li>loadMetadata() - qualites disponibles</li>
+            <li>loadSegments() - nombre total de segments</li>
+            <li>setupQualitySelector() - boutons qualite</li>
+            <li>startABR() - boucle d'adaptation (toutes les 5 secondes)</li>
+            <li>playSegmentAt(0) - lancer le premier segment</li>
+        </ol>
+        <h1>Detection des Segments Manquants</h1>
+        
+        <h2>Question Cle</h2>
+        <p><span class="highlight">Comment detecte-t-on qu'un segment n'existe pas?</span></p>
+        <p><strong>Reponse: Code HTTP 404 Not Found</strong></p>
+
+        <h2>Fonction: fetchSegment()</h2>
+        <div class="code-block"><code>async function fetchSegment(idx, quality, retries = 1) {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const url = `/media/${videoId}/${quality}/seg_${String(idx)
+        .padStart(3, '0')}.mp4`;
+      
+      // Timeout 5 secondes
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      
+      // DETECTION SEGMENT MANQUANT!
+      if (res.status === 404) {
+        console.error(`Segment ${idx} NOT FOUND`);
+        return null;  // Signal manquant
+      }
+      
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.blob();  // Succes
+      
+    } catch (err) {
+      // Pas de retry sur 404 ou timeout
+      if (err.name === 'AbortError') return null;
+      
+      // Retry avec delai exponentiel
+      if (attempt < retries - 1) {
+        const delay = Math.pow(2, attempt) * 500;
+        await new Promise(r => setTimeout(r, delay));
+      }
+    }
+  }
+  return null;
+}</code></div>
+
+        <h2>Les 3 Cas de Detection</h2>
+        <table class="table">
+            <tr>
+                <th>Code HTTP</th>
+                <th>Signification</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>200 OK</td>
+                <td>Segment existe</td>
+                <td>Retourner blob (fichier)</td>
+            </tr>
+            <tr>
+                <td>404 Not Found</td>
+                <td>Segment manquant (PERMANENT)</td>
+                <td>return null (STOP retry)</td>
+            </tr>
+            <tr>
+                <td>AbortError</td>
+                <td>Timeout 5 secondes</td>
+                <td>return null (STOP retry)</td>
+            </tr>
+        </table>
+
+        <div class="warning">
+            Pas de retry sur 404 car c'est une erreur PERMANENTE (le fichier n'existera jamais).
+        </div>
+        
+        <div class="page-number">4</div>
+    </div>
+
+    <!-- Page 5: Loading -->
+    <div class="page">
+        <h1>Chargement et Lecture des Segments</h1>
+        
+        <h2>Fonction: playSegmentAt()</h2>
+        <div class="code-block"><code>async function playSegmentAt(idx, offset = 0) {
+  highlightSegment(idx);
+  updateSegmentStatus(idx, 'loading');
+  
+  // Telecharger segment
+  const blob = await fetchSegment(idx, getCurrentQuality(), 1);
+  
+  // SEGMENT MANQUANT?
+  if (!blob) {  // null = manquant
+    updateSegmentStatus(idx, 'missing');
+    showError(`Segment ${idx + 1} is missing!`);
+    
+    // Auto-skip au suivant apres 2 secondes
+    setTimeout(() => {
+      if (idx + 1 < segments.length) {
+        setTimeout(() => playSegmentAt(idx + 1), 1000);
+      }
+    }, 2000);
+    return;
+  }
+  
+  // SEGMENT TROUVE!
+  updateSegmentStatus(idx, 'loaded');
+  
+  // Creer URL locale du blob
+  const url = URL.createObjectURL(blob);
+  
+  // Assigner au lecteur video
+  video.src = url;
+  video.currentTime = offset;  // IMPORTANT: offset!
+  video.play();
+  
+  // Precharger segment suivant
+  prebufferSegments(idx);
+}</code></div>
+
+        <h2>Mecanisme Auto-Skip</h2>
+        <p>Si un segment est manquant (404):</p>
+        <ol>
+            <li>Marquer le segment comme "missing"</li>
+            <li>Afficher message d'erreur</li>
+            <li>Attendre 2 secondes</li>
+            <li>Appel recursif: playSegmentAt(idx + 1)</li>
+            <li>L'utilisateur passe automatiquement au segment suivant</li>
+        </ol>
+
+        <div class="success">
+            Point cle: Si un segment echoue, l'application saute automatiquement au suivant via appel recursif, sans blocage.
+        </div>
+        
+        <div class="page-number">5</div>
+    </div>
+
+    <!-- Page 6: Quality Switch -->
+    <div class="page">
+        <h1>Bascule de Qualite Sans Interruption</h1>
+        
+        <h2>Le Probleme</h2>
+        <div class="warning">
+            Video a 12.3 secondes en 720p. Basculer a 480p. Comment rester a 12.3 secondes?
+        </div>
+
+        <h2>La Solution: Calcul avec Modulo</h2>
+        <div class="code-block"><code>function switchQualityAtCurrentTime() {
+  // Recuperer temps actuel
+  const time = video.currentTime;  // 12.3 secondes
+  
+  // Determiner segment actuel
+  const segmentDuration = 4;  // secondes/segment
+  const segIdx = Math.floor(time / segmentDuration);
+  // 12.3 / 4 = 3.075 -> Math.floor = 3
+  
+  // Position DANS le segment
+  const offset = time % segmentDuration;
+  // 12.3 % 4 = 0.3 secondes
+  
+  // Relancer depuis offset
+  playSegmentAt(segIdx, offset);  // Segment 3, a 0.3sec
+}</code></div>
+
+        <h2>Calcul Mathematique Detaille</h2>
+        <div class="formula">
+Timeline: Seg0[0-4] | Seg1[4-8] | Seg2[8-12] | Seg3[12-16]
+                                                 ^ 12.3s
+
+Calcul 1: Math.floor(12.3 / 4) = 3
+Calcul 2: 12.3 % 4 = 0.3
+
+Relancer playSegmentAt(3, 0.3):
+  video.currentTime = 0.3
+  Position reelle = 3 * 4 + 0.3 = 12.3 PARFAIT!
+        </div>
+
+        <h2>Verification</h2>
+        <p>Sans offset (MAUVAIS):</p>
+        <ul>
+            <li>playSegmentAt(3, 0) - oublie l'offset</li>
+            <li>video.currentTime = 0 - repart du debut!</li>
+            <li>Position = 12 secondes - ON A RECULE de 0.3s!</li>
+        </ul>
+        
+        <p>Avec offset (BON):</p>
+        <ul>
+            <li>playSegmentAt(3, 0.3)</li>
+            <li>video.currentTime = 0.3</li>
+            <li>Position = 12.3 secondes - AUCUNE INTERRUPTION!</li>
+        </ul>
+
+        <div class="success">
+            Resultat: Aucune interruption visible. L'utilisateur ne voit que le changement de qualite.
+        </div>
+        
+        <div class="page-number">6</div>
+    </div>
+
+    <!-- Page 7: Bandwidth -->
+    <div class="page">
+        <h1>ABR: Mesure de Bande Passante</h1>
+        
+        <h2>Approche: HEAD Request</h2>
+        <p> On a utiliser <span class="highlight">HEAD request</span> pour mesurer la taille SANS telecharger le fichier!</p>
+
+        <h2>Fonction: estimateBandwidth()</h2>
+        <div class="code-block"><code>async function estimateBandwidth() {
+  const start = performance.now();
+  
+  const url = `/media/${videoId}/720p/seg_005.mp4`;
+  
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 2000);  // Timeout 2s
+  
+  // HEAD: seulement les headers!
+  const res = await fetch(url, { 
+    method: 'HEAD',  // Pas le fichier entier
+    signal: controller.signal 
+  });
+  
+  // Taille du fichier depuis headers
+  const size = parseInt(res.headers.get('content-length'), 10);
+  const duration = performance.now() - start;
+  
+  // Calcul: (bytes * 8) / secondes / 1000 = kbps
+  const bandwidth = (size * 8) / (duration / 1000) / 1000;
+  return bandwidth;  // Ex: 5500 kbps
+}</code></div>
+
+        <h2>HEAD vs GET: Comparaison</h2>
+        <table class="table">
+            <tr>
+                <th>Methode</th>
+                <th>Telecharge</th>
+                <th>Temps</th>
+                <th>Gaspille bande?</th>
+            </tr>
+            <tr>
+                <td>HEAD</td>
+                <td>Headers uniquement (~500 bytes)</td>
+                <td>~50ms</td>
+                <td>NON - Excellent!</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>Fichier entier (2.5 MB)</td>
+                <td>~2500ms</td>
+                <td>OUI - Gaspille bande!</td>
+            </tr>
+        </table>
+
+        <h2>Exemple de Calcul</h2>
+        <div class="formula">
+Fichier: 2.5 MB = 2,500,000 bytes
+Temps: 0.5 secondes
+
+Formule: (2,500,000 * 8) / 0.5 / 1000
+       = 20,000,000 / 0.5 / 1000
+       = 40,000,000 / 1000
+       = 40,000 kbps = 40 Mbps
+        </div>
+        
+        <div class="page-number">7</div>
+    </div>
+
+    <!-- Page 8: Quality Selection -->
+    <div class="page">
+        <h1>ABR: Selection de Qualite</h1>
+        
+        <h2>Fonction: selectQualityForBandwidth()</h2>
+        <div class="code-block"><code>function selectQualityForBandwidth(bandwidth) {
+  if (bandwidth > 8000) return '1080p';  // > 8 Mbps
+  if (bandwidth > 4000) return '720p';   // > 4 Mbps
+  if (bandwidth > 2000) return '480p';   // > 2 Mbps
+  return '360p';                         // < 2 Mbps
+}</code></div>
+
+        <h2>Boucle ABR (toutes les 5 secondes)</h2>
+        <div class="code-block"><code>function startABR() {
+  setInterval(async () => {
+    if (!abrEnabled) return;  // Mode manuel? Ignorer
+    
+    const bandwidth = await estimateBandwidth();
+    const bestQuality = selectQualityForBandwidth(bandwidth);
+    
+    if (currentQuality !== bestQuality) {
+      currentQuality = bestQuality;
+      switchQualityAtCurrentTime();  // Bascule!
+    }
+  }, 5000);  // Toutes les 5 secondes
+}</code></div>
+
+        <h2>Table de Decision</h2>
+        <table class="table">
+            <tr>
+                <th>Bande Passante</th>
+                <th>Qualite</th>
+                <th>Resolution</th>
+                <th>Bitrate</th>
+            </tr>
+            <tr>
+                <td>> 8 Mbps</td>
+                <td>1080p</td>
+                <td>1920 x 1080</td>
+                <td>~8 Mbps</td>
+            </tr>
+            <tr>
+                <td>4-8 Mbps</td>
+                <td>720p</td>
+                <td>1280 x 720</td>
+                <td>~4 Mbps</td>
+            </tr>
+            <tr>
+                <td>2-4 Mbps</td>
+                <td>480p</td>
+                <td>854 x 480</td>
+                <td>~2 Mbps</td>
+            </tr>
+            <tr>
+                <td>< 2 Mbps</td>
+                <td>360p</td>
+                <td>640 x 360</td>
+                <td>~1 Mbps</td>
+            </tr>
+        </table>
+
+        <div class="success">
+            La boucle ABR mesure la bande passante toutes les 5 secondes et ajuste automatiquement la qualite pour s'adapter a la connexion.
+        </div>
+        
+        <div class="page-number">8</div>
+    </div>
+
+    <!-- Page 9: Buffer -->
+    <div class="page">
+        <h1>Gestion du Buffer (Prechargement)</h1>
+        
+        <h2>Fonction: prebufferSegments()</h2>
+        <div class="code-block"><code>function prebufferSegments(startIdx) {
+  const nextIdx = startIdx + 1;
+  
+  if (nextIdx < segments.length && 
+      bufferMap[nextIdx] !== 'loaded' && 
+      bufferMap[nextIdx] !== 'loading') {
+    
+    bufferMap[nextIdx] = 'loading';
+    
+    // Telecharger en arriere-plan
+    fetchSegment(nextIdx, getCurrentQuality(), 2)
+      .then((blob) => {
+        if (blob) {
+          updateSegmentStatus(nextIdx, 'buffered');
+        }
+      })
+      .catch(() => updateSegmentStatus(nextIdx, 'missing'));
+  }
+}</code></div>
+
+        <h2>Pourquoi 1 Segment et Pas 5?</h2>
+        <table class="table">
+            <tr>
+                <th>Strategie</th>
+                <th>Avantage</th>
+                <th>Probleme</th>
+            </tr>
+            <tr>
+                <td>0 segments</td>
+                <td>Moins de requetes reseau</td>
+                <td>Buffering visible - experience utilisateur mauvaise</td>
+            </tr>
+            <tr>
+                <td>1 segment (Optimal)</td>
+                <td>Segment suivant pret avant fin du segment actuel</td>
+                <td>Aucun!</td>
+            </tr>
+            <tr>
+                <td>5+ segments</td>
+                <td>Jamais de buffering possible</td>
+                <td>Gaspille bande passante si utilisateur saute</td>
+            </tr>
+        </table>
+
+        <h2>Timeline Precharge</h2>
+        <div class="diagram">
+T=0s   Joue Segment 0 (4 secondes)
+       Precharge simultanement Segment 1
+
+T=2.5s Segment 1 telecharge = pret en cache
+
+T=4s   Segment 0 se termine
+       Segment 1 DEJA PRET!
+       Pas d'attente = lecture continue!
+
+Resultat: 0 secondes de buffering
+        </div>
+
+        <div class="success">
+            1 segment d'avance est le "sweet spot" optimal entre utilisation reseau et qualite d'experience utilisateur.
+        </div>
+        
+        <div class="page-number">9</div>
+    </div>
+
+    <!-- Page 10: Example -->
+    <div class="page">
+        <h1>Exemple Reel Complet</h1>
+        
+        <h2>Configuration Test</h2>
+        <p>Video: 100 secondes, segments: 4 secondes = 25 segments total</p>
+
+        <h2>Timeline Execution Complete</h2>
+        <div class="diagram">
+T=0s   playSegmentAt(0) en 720p
+       Telecharge Segment 0 (2.5 MB)
+
+T=2.5s Segment 0 pret
+       video.play()
+
+T=4s   Segment 0 finit
+       playSegmentAt(1)
+
+T=5s   *** ABR CHECK #1 ***
+       Mesure: 5500 kbps -> Qualite 1080p
+       switchQualityAtCurrentTime()
+       - time = 4.3s
+       - segIdx = floor(4.3/4) = 1
+       - offset = 4.3 % 4 = 0.3
+       - playSegmentAt(1, 0.3)
+
+T=15s  *** ABR CHECK #3 ***
+       Mesure: 3200 kbps -> Qualite 480p
+       Bascule automatique!
+
+T=45s  *** SEGMENT MANQUANT! ***
+       playSegmentAt(11)
+       fetchSegment(11) -> 404 Not Found!
+       return null
+       Marquer 'missing'
+       Auto-skip playSegmentAt(12)
+
+T=100s Fin video
+       Statistiques: 24/25 segments charges
+        </div>
+        
+        <div class="page-number">10</div>
+    </div>
+
+
+    <!-- Page 12: Summary -->
+    <div class="page">
+        <h1>Resume des Points Cles</h1>
+        
+        <h2>1. Architecture Segments</h2>
+        <p>Diviser video en petits segments (4-10 secondes) permet granularite, adaptation et resilience.</p>
+
+        <h2>2. Detection 404</h2>
+        <p>Code: res.status === 404 -> return null. Pas de retry car erreur permanente.</p>
+
+        <h2>3. Bascule Sans Interruption</h2>
+        <p>Calculer offset: offset = time % segmentDuration. Rel

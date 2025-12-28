@@ -1,0 +1,56 @@
+{
+  "videoId": "f1400c3b-e0ee-4e62-9a3e-57f162821e4e",
+  "title": "BMW M4 Cinematic Edit _ PHONK x Speed _ 4K Ultra HD",
+  "originalWidth": 1280,
+  "originalHeight": 720,
+  "duration": 22.702562,
+  "segmentDuration": 10,
+  "processedAt": "2025-12-06T18:28:55.601Z",
+  "qualities": [
+    {
+      "name": "144p",
+      "width": 256,
+      "height": 144,
+      "bitrate": "200k",
+      "audioBitrate": "64k",
+      "segmentDuration": 10,
+      "totalSegments": 3
+    },
+    {
+      "name": "240p",
+      "width": 426,
+      "height": 240,
+      "bitrate": "400k",
+      "audioBitrate": "64k",
+      "segmentDuration": 10,
+      "totalSegments": 3
+    },
+    {
+      "name": "360p",
+      "width": 640,
+      "height": 360,
+      "bitrate": "800k",
+      "audioBitrate": "96k",
+      "segmentDuration": 10,
+      "totalSegments": 3
+    },
+    {
+      "name": "480p",
+      "width": 854,
+      "height": 480,
+      "bitrate": "1400k",
+      "audioBitrate": "128k",
+      "segmentDuration": 10,
+      "totalSegments": 3
+    },
+    {
+      "name": "720p",
+      "width": 1280,
+      "height": 720,
+      "bitrate": "2800k",
+      "audioBitrate": "192k",
+      "segmentDuration": 10,
+      "totalSegments": 3
+    }
+  ]
+}
